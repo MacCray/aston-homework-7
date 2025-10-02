@@ -1,0 +1,43 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: user-service
+              uri: http://localhost:8080
+              predicates:
+                - Path=/userapi/users/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    id: userServiceCircuit
+                    fallbackUri: forward:/fallback/users
+            - id: notification-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/notificationapi/sendEmail**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    id: notificationServiceCircuit
+                    fallbackUri: forward:/fallback/notification
+resilience4j.circuitbreaker:
+  instances:
+    userServiceCircuit:
+      sliding-window-size: 10
+      minimum-number-of-calls: 5
+      wait-duration-in-open-state:
+        seconds: 10
+      failure-rate-threshold: 50
+      automatic-transition-from-open-to-half-open-enabled: true
+    notificationServiceCircuit:
+      sliding-window-size: 5
+      minimum-number-of-calls: 3
+      wait-duration-in-open-state:
+        seconds: 5
+      failure-rate-threshold: 50
+      automatic-transition-from-open-to-half-open-enabled: true
+server:
+  port: 8082
+
