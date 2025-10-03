@@ -1,0 +1,12 @@
+spring:
+  application.name:
+    config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri:
+            file:///C:/MacCray/AstonModules/config-repo
+          search-paths: "{application}"
+server:
+  port: 8888
