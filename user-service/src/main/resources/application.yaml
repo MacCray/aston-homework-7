@@ -1,8 +1,12 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: 1
+  application:
+    name: user-service
+  cloud:
+    config:
+      fail-fast: true
+  config:
+    import:
+      optional:configserver:http://localhost:8888
   jpa:
     hibernate:
       ddl-auto: validate
@@ -12,12 +16,5 @@ spring:
         format_sql: true
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    admin:
-      auto-create: true
-    template:
-      default-topic: "user-events"
+server:
+  forward-headers-strategy: framework

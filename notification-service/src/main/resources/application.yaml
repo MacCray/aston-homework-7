@@ -1,24 +1,11 @@
 spring:
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: notification-service
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-    properties:
-      spring.json.trusted.packages: "*"
-    topic:
-      user-events: "user-events"
-  mail:
-    host: localhost
-    port: 1025
+  application:
+    name: notification-service
+  cloud:
+    config:
+      fail-fast: true
+  config:
+    import:
+      optional:configserver:http://localhost:8888
 server:
   port: 8081
-notification:
-  message:
-    "{
-        'subject': 'Уведомление от notification service', 
-        'account-created': 'Здравствуйте! Ваш аккаунт на сайте был успешно создан.', 
-        'account-deleted': 'Здравствуйте! Ваш аккаунт был удалён.'
-    }"

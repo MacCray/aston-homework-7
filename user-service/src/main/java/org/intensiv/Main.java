@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 public class Main {
     public static void main(String[] args) {
-
         try {
             log.info("Запуск user-service");
             SpringApplication.run(Main.class, args);
